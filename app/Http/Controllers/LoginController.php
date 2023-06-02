@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\categories;
-use App\Models\product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
-class ProductController extends Controller
+class LoginController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +16,11 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $product = product::all();
-        return view('product.index', compact('product'));
+        // if (Auth::check()) {
+        //     return redirect()->route('dashboard');
+        // }
+
+        return view('auth.login');
     }
 
     /**
@@ -26,8 +30,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $categories = categories::all();
-        return view('product.create', compact('categories'));
+        //
     }
 
     /**
@@ -38,12 +41,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $product = product::create([
-            'categories_id' => $request->categories,
-            'name' => $request->name,
-            'price' => $request->price
-        ]);
-        return redirect()->route('product.index');
+        //
     }
 
     /**
@@ -65,11 +63,7 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $product = product::where('id', $id)->with('categories')->first();
-
-        $categories = categories::all();
-
-        return view('product.edit', compact('product', 'categories'));
+        //
     }
 
     /**
@@ -81,13 +75,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        product::where('id', $id)->update([
-            'categories_id' => $request->categories,
-            'name' => $request->name,
-            'price' => $request->price
-        ]);
-
-        return redirect()->route('product.index');
+        //
     }
 
     /**
@@ -98,10 +86,35 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $product = product::find($id);
+        //
+    }
 
-        $product->delete();
+    // public function authenticate(Request $request)
+    // {
+    //     // dd($request->all());
 
-        return redirect()->route('product.index');
+    //     $validate = Validator::make($request->all(), [
+    //         'email' => 'required|email',
+    //         'password' => 'required',
+    //     ]);
+
+    //     if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+    //         $request->session()->regenerate();
+
+    //         return redirect()->route('dashboard');
+    //     }
+
+    //     return redirect()->back()->with('error', 'Email dan password anda salah');
+    // }
+
+    public function logout(Request $request)
+    {
+        // Auth::logout();
+
+        // $request->session()->invalidate();
+
+        // $request->session()->regenerateToken();
+
+        // return redirect()->route('login');
     }
 }

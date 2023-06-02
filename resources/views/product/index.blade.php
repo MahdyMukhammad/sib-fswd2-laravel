@@ -28,8 +28,14 @@
                                 <td>{{ $products['name'] }}</td>
                                 <td>Rp. {{ number_format($products->price, 0, 2) }}</td>
                                 <td>
-                                    <a href="#" class="btn btn-warning">Edit</a>
-                                    <button class="btn btn-danger">Delete</button>
+                                    <form onsubmit="return confirm('Are You Sure? ');"
+                                        action="{{ route('product.destroy', $products->id) }}" method="POST">
+                                        <a href="{{ route('product.edit', $products->id) }}"
+                                            class="btn btn-warning">Edit</a>
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach

@@ -15,8 +15,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user = User::all();
-        return view('user.index', compact('user'));
+        $users = User::with('role')->get();
+        return view('user.index', compact('users'));
     }
 
     /**
@@ -67,7 +67,11 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = User::find($id);
+
+        $role = role::all();
+
+        return view('user.edit', compact('user', 'role'));
     }
 
     /**
@@ -79,7 +83,15 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = User::find($id);
+
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+        ]);
+
+        return redirect()->route('user.index');
     }
 
     /**
@@ -90,6 +102,10 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::find($id);
+
+        $user->delete();
+
+        return redirect()->route('user.index');
     }
 }

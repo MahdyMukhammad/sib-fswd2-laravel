@@ -12,7 +12,7 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Role User</th>
+                            {{-- <th>Role User</th> --}}
                             <th>Name</th>
                             <th>Email</th>
                             <th>Phone</th>
@@ -20,17 +20,26 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($user as $listuser)
+                        @foreach ($users as $listuser)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $listuser->role->name }}</td>
+                                {{-- <td>{{ $listuser->role->name }}</td> --}}
                                 <td>{{ $listuser->name }}</td>
                                 <td>{{ $listuser->email }}</td>
                                 <td>{{ $listuser->phone }}</td>
+                                {{-- <td>
+                                    <span
+                                        class="badge  {{ $listuser->role->name == 'admin' ? 'bg-success' : 'bg-primary' }}">{{ $listuser->role->name }}</span>
+                                </td> --}}
 
                                 <td>
-                                    <a href="#" class="btn btn-warning">Edit</a>
-                                    <button class="btn btn-danger">Delete</button>
+                                    <form onsubmit="return confirm('Are You Sure? ');"
+                                        action="{{ route('user.destroy', $listuser->id) }}" method="POST">
+                                        <a href="{{ route('user.edit', $listuser->id) }}" class="btn btn-warning">Edit</a>
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach

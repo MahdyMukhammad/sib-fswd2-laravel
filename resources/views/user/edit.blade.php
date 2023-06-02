@@ -1,17 +1,19 @@
 @extends('layout.main')
 @section('maincontent')
     <div class="container-fluid px-4">
-        <h1>Create User</h1>
+        <h1>Edit User</h1>
         <div class="card mb-4">
             <div class="card-body">
-                <form action="{{ route('user.store') }}" method="POST">
+                <form action="{{ route('user.store', $user->id) }}" method="POST">
                     @csrf
+                    @method('PUT')
                     <div class="form-group">
                         <label for="name" class="form-label">Role User</label>
                         <select class="form-select" name="role" id="role">
                             <option selected disabled>Choose Your Role</option>
                             @foreach ($role as $roleuser)
-                                <option value="{{ $roleuser->id }}">{{ $roleuser->name }}</option>
+                                <option value="{{ $roleuser->id }}"{{ $user->role_id == $roleuser->id ? 'selected' : '' }}>
+                                    {{ $roleuser->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -31,7 +33,7 @@
                             name="phone" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
-                    <button type="submit" class="btn btn-secondary">Cancel</button>
+                    <a href="{{ route('user.index') }}" class="btn btn-secondary">Cancel</a>
                 </form>
             </div>
         </div>

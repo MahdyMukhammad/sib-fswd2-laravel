@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\categories;
-use App\Models\product;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
-class ProductController extends Controller
+class RegisterController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +15,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $product = product::all();
-        return view('product.index', compact('product'));
+        return view('auth.register');
     }
 
     /**
@@ -26,8 +25,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $categories = categories::all();
-        return view('product.create', compact('categories'));
+        //
     }
 
     /**
@@ -38,12 +36,19 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $product = product::create([
-            'categories_id' => $request->categories,
+        $store = User::create([
             'name' => $request->name,
-            'price' => $request->price
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'role_id' => 3,
+            'password' => Hash::make($request->password),
         ]);
-        return redirect()->route('product.index');
+
+        if ($store) {
+            return redirect()->route('login')->with('succes', 'register berhasil, silahkan kembali ke halaman login');
+        } else {
+            return redirect()->back()->with('error', 'register gagal, silahkan coba kembali');
+        }
     }
 
     /**
@@ -65,11 +70,7 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $product = product::where('id', $id)->with('categories')->first();
-
-        $categories = categories::all();
-
-        return view('product.edit', compact('product', 'categories'));
+        //
     }
 
     /**
@@ -81,13 +82,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        product::where('id', $id)->update([
-            'categories_id' => $request->categories,
-            'name' => $request->name,
-            'price' => $request->price
-        ]);
-
-        return redirect()->route('product.index');
+        //
     }
 
     /**
@@ -98,10 +93,6 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $product = product::find($id);
-
-        $product->delete();
-
-        return redirect()->route('product.index');
+        //
     }
 }

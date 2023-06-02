@@ -17,13 +17,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($role as $roleuser)
+                        @foreach ($roles as $roleuser)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $roleuser['name'] }}</td>
                                 <td>
-                                    <a href="#" class="btn btn-warning">Edit</a>
-                                    <button class="btn btn-danger">Delete</button>
+                                    <form onsubmit="return confirm('Are You Sure? ');"
+                                        action="{{ route('role.destroy', $roleuser->id) }}" method="POST">
+                                        <a href="{{ route('role.edit', $roleuser->id) }}" class="btn btn-warning">Edit</a>
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach
