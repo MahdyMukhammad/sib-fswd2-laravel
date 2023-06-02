@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\categories;
 use App\Models\product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
@@ -38,6 +39,20 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        // $validator = Validator::make($request->all(), [
+        //     'category' => 'required',
+        //     'name' => 'required|string|min:3',
+        //     'price' => 'required|integer',
+        //     'sale_price' => 'required|integer',
+        //     'brand' => 'required|string',
+        //     'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        // ]);
+
+        // if ($validator->fails()) {
+        //     return redirect()->back()->withErrors($validator->errors())->withInput();
+        // }
+
+
         $product = product::create([
             'categories_id' => $request->categories,
             'name' => $request->name,
